@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 # Discord Bot command Prefix
 client = commands.Bot(command_prefix='!')
 
-# clean this up somehow later
+# clean this up somehow later (maybe use another file)
 randomGames = ['Hearts of Iron IV', 'Counter Strike Global Offensive', 'League of Legends', 'Europa Universallis']
 
 @client.event
