@@ -1,4 +1,5 @@
 # importing libraries
+import asyncio
 import datetime
 from discord.ext import commands
 import random
@@ -133,9 +134,9 @@ async def on_message(message):
         # CHECKING_IF_THE_WORD_IS_IN_BANNEDWORDSLIST
         if message.content.count(word) > 0:
             await message.channel.send('Men schat ap plz or i kil family')
-            time.sleep(2)
+            await asyncio.sleep(2)
             await message.channel.send('Btw i delete your text yes?')
-            time.sleep(4)
+            await asyncio.sleep(2)
             await message.delete()
             await message.channel.purge(limit=2)
 
@@ -143,4 +144,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.M7bBJvE1n5DAyVVZssEIbJ69CMA')  # TOKEN
+client.run('NjYzMTIzOTQxNDYzNjg3MTg4.XhD8Sw.beSlb2YfNYGM4GHWalRWG8VfMXA')  # TOKEN
