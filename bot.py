@@ -5,7 +5,7 @@ from discord.ext import commands
 import random
 from random import randint
 import discord
-import time
+import os
 
 # set prefix
 client = commands.Bot(command_prefix='!')
@@ -27,6 +27,11 @@ randomGamesList = readFiles("./Lists/randomgames.txt")
 triggerList = readFiles("./Lists/trigger.txt")
 bannedWordsList = readFiles("./Lists/bannedwords.txt")
 
+# load cogs
+for filename in os.listdir("./cogs"):
+    if filename.endswith(".py"):
+        client.load_extension(f'cogs.{filename[:-3]}')
+
 
 @client.event
 async def on_ready():
@@ -35,26 +40,44 @@ async def on_ready():
     await client.change_presence(status=discord.Status.online, activity=discord.Game(random.choice(randomGamesList)))
 
 
+# LOAD COG
+@client.command(aliases=["load"])
+async def loadCog(ctx, cogName=None):
+    if cogName is None:
+        await ctx.send("men wahts the cog nam?")
+        return
+
+    client.load_extension(f'cogs.{cogName}')
+
+
+# UNLOAD COG
+@client.command(aliases=["unload"])
+async def unloadCog(ctx, cogName=None):
+    if cogName is None:
+        await ctx.send("men wahts the cog nam?")
+        return
+
+    client.unload_extension(f'cogs.{cogName}')
+
+
 # HELP
-@client.command(aliases=["commands"])
+@client.command(help="test for help help")
 # leave args to None so that ppl can later on do something like !help ping to explain command more detailed
-# also if you get error something about the function name help ignore it bc I disabled default help command  anyways
+# also if you get error something about the function name help ignore it bc I disabled default help command anyways
 async def help(ctx, args=None):
-    embed = discord.Embed(title="title ~~(did you know you can have markdown here too?)~~",
-                          colour=discord.Colour(0xa3cf32), url="https://discordapp.com",
-                          description="this supports [named links](https://discordapp.com) on top of the previously shown subset of markdown. ```\nyes, even code blocks```",
+    embed = discord.Embed(title="List of commands",
+                          colour=discord.Colour(0xa3cf32),
                           timestamp=datetime.datetime.now()) \
-        .set_image(url="https://cdn.discordapp.com/embed/avatars/0.png") \
         .set_thumbnail(url="https://cdn.discordapp.com/embed/avatars/0.png") \
         .set_author(name="author name", url="https://discordapp.com",
                     icon_url="https://cdn.discordapp.com/embed/avatars/0.png") \
         .set_footer(text="footer text", icon_url="https://cdn.discordapp.com/embed/avatars/0.png") \
-        .add_field(name="🤔", value="some of these properties have certain limits...") \
-        .add_field(name="😱", value="try exceeding some of them!") \
-        .add_field(name="🙄",
-                   value="an informative error should show up, and this view will remain as-is until all issues are fixed") \
-        .add_field(name="<:thonkang:219069250692841473>", value="these last two", inline=True) \
-        .add_field(name="<:thonkang:219069250692841473>", value="are inline fields", inline=True)
+
+    for x in client.commands:
+        if len(x.aliases) == 0:
+            embed.add_field(name=x.name, value=x.help, inline=False)
+        else:
+            embed.add_field(name=x.aliases[0], value=x.help, inline=False)
 
     await ctx.send(embed=embed)
 
@@ -144,4 +167,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('NjYzMTIzOTQxNDYzNjg3MTg4.XhD8Sw.beSlb2YfNYGM4GHWalRWG8VfMXA')  # TOKEN
+client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.f_NbvDZSOzo5PK2LBM21eiuthe4')  # TOKEN
