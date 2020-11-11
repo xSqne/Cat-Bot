@@ -83,19 +83,19 @@ async def help(ctx, args=None):
 
 
 # PING
-@client.command()
+@client.command(help="pinger")
 async def ping(ctx):
     await ctx.send(f'Pong, {round(client.latency * 1000)} ms')
 
 
 # GEY
-@client.command()
+@client.command(help="everyone iz gae")
 async def gey(ctx):
     await ctx.send('Everyone reading this is gay')
 
 
 # 8BALL
-@client.command(aliases=["8ball"])
+@client.command(aliases=["8ball"], help="8ball askr questiyon")
 async def _8ball(ctx, *, question=None):
     if question is None:
         await ctx.send("wher iz question??")
@@ -106,7 +106,7 @@ async def _8ball(ctx, *, question=None):
 
 
 # SPAM
-@client.command()
+@client.command(help="spam people veri nayz")
 async def spam(ctx, *, person=None):
     if person is None:
         await ctx.send("pilis specify waht to spam")
@@ -115,25 +115,25 @@ async def spam(ctx, *, person=None):
         await ctx.send(person)
 
 
-@client.command(aliases=['shut up men', 'men plz stop'])
+@client.command(aliases=['shut up men', 'men plz stop'], help="schattr apr")
 async def schatap(ctx):
     await ctx.send('Ok men i stop big sory')
 
 
 # REMIND
-@client.command(aliases=['remind'])
+@client.command(aliases=['remind'], help="remindme martin gae")
 async def remindme(ctx):
     await ctx.send('Martin is gey')
 
 
 # THANKS
-@client.command(aliases=['good', 'gut'])
+@client.command(aliases=['good', 'gut'], help="veri gud")
 async def gud(ctx):
     await ctx.send('thx')
 
 
 # CHANGE GAME
-@client.command(aliases=['changegame'])
+@client.command(aliases=['changegame'], help="changer geym")
 async def changeGame(ctx):
     luck = randint(0, 5)
     if luck == 1:
