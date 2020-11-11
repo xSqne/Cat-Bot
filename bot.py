@@ -68,10 +68,10 @@ async def help(ctx, args=None):
     embed = discord.Embed(title="List of commands",
                           colour=discord.Colour(0xa3cf32),
                           timestamp=datetime.datetime.now()) \
-        .set_thumbnail(url="https://cdn.discordapp.com/embed/avatars/0.png") \
-        .set_author(name="author name", url="https://discordapp.com",
-                    icon_url="https://cdn.discordapp.com/embed/avatars/0.png") \
-        .set_footer(text="footer text", icon_url="https://cdn.discordapp.com/embed/avatars/0.png") \
+        .set_thumbnail(url="https://f4.bcbits.com/img/a1976873474_10.jpg") \
+        .set_author(name="BIG CHUNGUS", url="https://discordapp.com",
+                    icon_url="https://f4.bcbits.com/img/a1976873474_10.jpg") \
+        .set_footer(text="footer text", icon_url="https://f4.bcbits.com/img/a1976873474_10.jpg") \
 
     for x in client.commands:
         if len(x.aliases) == 0:
@@ -167,4 +167,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.f_NbvDZSOzo5PK2LBM21eiuthe4')  # TOKEN
+client.run('token')  # TOKEN
