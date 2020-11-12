@@ -1,8 +1,8 @@
 # importing libraries
 import asyncio
 import datetime
+import time
 
-from discord import User
 from discord.ext import commands
 import random
 from random import randint
@@ -13,7 +13,6 @@ import os
 client = commands.Bot(command_prefix='!')
 # apparently there's an implemented help command so disable it bc it look ugly
 client.remove_command('help')
-
 
 # function to read files
 def readFiles(filePath):
@@ -43,7 +42,7 @@ async def on_ready():
 
 
 # LOAD COG
-@client.command(aliases=["load"], help="admin command no touch or ban")
+@client.command(name="load", help="admin command no touch or ban")
 async def loadCog(ctx, cogName=None):
     if cogName is None:
         await ctx.send("men wahts the cog nam?")
@@ -53,7 +52,7 @@ async def loadCog(ctx, cogName=None):
 
 
 # UNLOAD COG
-@client.command(aliases=["unload"], help="admin command no touch or ban")
+@client.command(name="unload", help="admin command no touch or ban")
 async def unloadCog(ctx, cogName=None):
     if cogName is None:
         await ctx.send("men wahts the cog nam?")
@@ -63,7 +62,7 @@ async def unloadCog(ctx, cogName=None):
 
 
 # HELP
-@client.command(help="test for help help")
+@client.command(name="help", help="test for help help")
 # leave args to None so that ppl can later on do something like !help ping to explain command more detailed
 # also if you get error something about the function name help ignore it bc I disabled default help command anyways
 async def help(ctx, args=None):
@@ -76,28 +75,25 @@ async def help(ctx, args=None):
         .set_footer(text="footer text", icon_url="https://f4.bcbits.com/img/a1976873474_10.jpg") \
 
     for x in client.commands:
-        if len(x.aliases) == 0:
-            embed.add_field(name=x.name, value=x.help, inline=False)
-        else:
-            embed.add_field(name=x.aliases[0], value=x.help, inline=False)
+        embed.add_field(name=x.name, value=x.help, inline=False)
 
     await ctx.send(embed=embed)
 
 
 # PING
-@client.command(help="pinger")
+@client.command(name="ping", help="pinger")
 async def ping(ctx):
     await ctx.send(f'Pong, {round(client.latency * 1000)} ms')
 
 
 # GEY
-@client.command(help="everyone iz gae")
+@client.command(name="gay", help="everyone iz gae")
 async def gey(ctx):
     await ctx.send('Everyone reading this is gay')
 
 
 # 8BALL
-@client.command(aliases=["8ball"], help="8ball askr questiyon")
+@client.command(name="8ball", help="8ball askr questiyon")
 async def _8ball(ctx, *, question=None):
     if question is None:
         await ctx.send("wher iz question??")
@@ -108,7 +104,7 @@ async def _8ball(ctx, *, question=None):
 
 
 # SPAM
-@client.command(help="spam people veri nayz")
+@client.command(name="spam", help="spam people veri nayz")
 async def spam(ctx, *, person=None):
     if person is None:
         await ctx.send("pilis specify waht to spam")
@@ -117,25 +113,25 @@ async def spam(ctx, *, person=None):
         await ctx.send(person)
 
 
-@client.command(aliases=['shut up men', 'men plz stop'], help="schattr apr")
+@client.command(name="schatap", aliases=['shut up men', 'men plz stop'], help="schattr apr")
 async def schatap(ctx):
     await ctx.send('Ok men i stop big sory')
 
 
 # REMIND
-@client.command(aliases=['remind'], help="remindme martin gae")
+@client.command(name="remindme", aliases=['remind'], help="remindme martin gae")
 async def remindme(ctx):
     await ctx.send('Martin is gey')
 
 
 # THANKS
-@client.command(aliases=['good', 'gut'], help="veri gud")
+@client.command(name="gud", aliases=['good', 'gut'], help="veri gud")
 async def gud(ctx):
     await ctx.send('thx')
 
 
 # CHANGE GAME
-@client.command(aliases=['changegame'], help="changer geym")
+@client.command(name="changegame", help="changer geym")
 async def changeGame(ctx):
     luck = randint(0, 5)
     if luck == 1:
@@ -172,4 +168,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.XbqiiBENQf7wBykljZi_MO-_NtQ')  # TOKEN
+client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.H0w6vJ1maV6R_TxALuoVAkLoYIs')  # TOKEN
