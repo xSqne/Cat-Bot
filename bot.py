@@ -168,4 +168,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.O2ZTkfCF-bYGtcFS89GnjpSgaX8')  # TOKEN
+client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.H0w6vJ1maV6R_TxALuoVAkLoYIs')  # TOKEN

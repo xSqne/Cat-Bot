@@ -1,6 +1,7 @@
 import re
 import discord
 import lavalink
+from discord import Reaction
 from discord.ext import commands
 
 url_rx = re.compile(r'https?://(?:www\.)?.+')
@@ -152,12 +153,12 @@ class Music(commands.Cog):
 
         if not player.is_connected:
             # We can't disconnect, if we're not connected.
-            return await ctx.send('Not connected.')
+            return await ctx.send('im not connekted to any voice channel men')
 
         if not ctx.author.voice or (player.is_connected and ctx.author.voice.channel.id != int(player.channel_id)):
             # Abuse prevention. Users not in voice channels, or not in the same voice channel as the bot
             # may not disconnect the bot.
-            return await ctx.send('You\'re not in my voicechannel!')
+            return await ctx.send('y u try to disconnect me when ur not even listening men?')
 
         # Clear the queue to ensure old tracks don't start playing
         # when someone else queues something.
@@ -166,7 +167,7 @@ class Music(commands.Cog):
         await player.stop()
         # Disconnect from the voice channel.
         await self.connect_to(ctx.guild.id, None)
-        await ctx.send('*⃣ | Disconnected.')
+        await ctx.message.add_reaction('👍')
 
 
 def setup(bot):
