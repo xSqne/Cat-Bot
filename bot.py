@@ -1,6 +1,8 @@
 # importing libraries
 import asyncio
 import datetime
+
+from discord import User
 from discord.ext import commands
 import random
 from random import randint
@@ -41,7 +43,7 @@ async def on_ready():
 
 
 # LOAD COG
-@client.command(aliases=["load"])
+@client.command(aliases=["load"], help="admin command no touch or ban")
 async def loadCog(ctx, cogName=None):
     if cogName is None:
         await ctx.send("men wahts the cog nam?")
@@ -51,7 +53,7 @@ async def loadCog(ctx, cogName=None):
 
 
 # UNLOAD COG
-@client.command(aliases=["unload"])
+@client.command(aliases=["unload"], help="admin command no touch or ban")
 async def unloadCog(ctx, cogName=None):
     if cogName is None:
         await ctx.send("men wahts the cog nam?")
@@ -146,6 +148,9 @@ async def changeGame(ctx):
 # READING_MESSAGES
 @client.event
 async def on_message(message):
+    if message.author.bot:
+        return
+
     for word in triggerList:
         # CHECKING_IF_THE_WORD_IS_IN_TRIGGERLIST
         if message.content.count(word) > 0:
@@ -167,4 +172,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('token')  # TOKEN
+client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.SVZLmxXrPgvi0mU5-KQgsRxjRl8')  # TOKEN
