@@ -13,13 +13,13 @@ class meme(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(help = 'it help meme yse?')
-    async def meme(self, ctx):
-        subreddit = reddit.subreddit('memes')
+    @commands.command(help = 'veri gud kedi yse???')
+    async def kedi(self, ctx):
+        subreddit = reddit.subreddit('cat')
         all_subs = []
-        new = subreddit.new(limit = 50)
+        hot = subreddit.hot(limit = 50)
 
-        for submission in new:
+        for submission in hot:
             all_subs.append(submission)
 
         random_sub = random.choice(all_subs)
