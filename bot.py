@@ -25,9 +25,9 @@ def readFiles(filePath):
 
 
 # load files into lists
-randomGamesList = readFiles("./Lists/randomgames.txt")
-triggerList = readFiles("./Lists/trigger.txt")
-bannedWordsList = readFiles("./Lists/bannedwords.txt")
+randomGamesList = readFiles("lists/randomgames.txt")
+triggerList = readFiles("lists/trigger.txt")
+bannedWordsList = readFiles("lists/bannedwords.txt")
 
 # load cogs
 for filename in os.listdir("./cogs"):
@@ -172,4 +172,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.SVZLmxXrPgvi0mU5-KQgsRxjRl8')  # TOKEN
+client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.XbqiiBENQf7wBykljZi_MO-_NtQ')  # TOKEN
