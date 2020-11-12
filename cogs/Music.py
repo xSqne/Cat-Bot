@@ -90,7 +90,7 @@ class Music(commands.Cog):
         # The above looks dirty, we could alternatively use `bot.shards[shard_id].ws` but that assumes
         # the bot instance is an AutoShardedBot.
 
-    @commands.command(aliases=['p'])
+    @commands.command(name="play", aliases=['p'])
     async def play(self, ctx, *, query: str):
         """ Searches and plays a song from a given query. """
         # Get the player for this guild from cache.
@@ -145,7 +145,7 @@ class Music(commands.Cog):
         if not player.is_playing:
             await player.play()
 
-    @commands.command(aliases=['dc'])
+    @commands.command(name="disconnect", aliases=['dc'])
     async def disconnect(self, ctx):
         """ Disconnects the player from the voice channel and clears its queue. """
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
