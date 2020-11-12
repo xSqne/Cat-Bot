@@ -1,8 +1,6 @@
 # importing libraries
 import asyncio
 import datetime
-import time
-
 from discord.ext import commands
 import random
 from random import randint
@@ -17,8 +15,8 @@ client.remove_command('help')
 # function to read files
 def readFiles(filePath):
     f = open(filePath, "r")
-    i = f.read()
-    l = i.split('\n')
+    i = f.readlines()
+    l = [x.strip() for x in i]
     f.close()
     return l
 
@@ -27,6 +25,7 @@ def readFiles(filePath):
 randomGamesList = readFiles("lists/randomgames.txt")
 triggerList = readFiles("lists/trigger.txt")
 bannedWordsList = readFiles("lists/bannedwords.txt")
+responses = readFiles("lists/responses.txt")
 
 # load cogs
 for filename in os.listdir("./cogs"):
@@ -42,30 +41,23 @@ async def on_ready():
 
 
 # LOAD COG
-@client.command(name="load", help="admin command no touch or ban")
-async def loadCog(ctx, cogName=None):
-    if cogName is None:
-        await ctx.send("men wahts the cog nam?")
-        return
-
-    client.load_extension(f'cogs.{cogName}')
-
-
-# UNLOAD COG
-@client.command(name="unload", help="admin command no touch or ban")
-async def unloadCog(ctx, cogName=None):
+@client.command(name="reload")
+async def reload(ctx, cogName=None):
+    """admin command no touch or ban"""
     if cogName is None:
         await ctx.send("men wahts the cog nam?")
         return
 
     client.unload_extension(f'cogs.{cogName}')
+    client.load_extension(f'cogs.{cogName}')
 
 
 # HELP
-@client.command(name="help", help="test for help help")
+@client.command(name="help")
 # leave args to None so that ppl can later on do something like !help ping to explain command more detailed
 # also if you get error something about the function name help ignore it bc I disabled default help command anyways
 async def help(ctx, args=None):
+    """test for help help"""
     embed = discord.Embed(title="List of commands",
                           colour=discord.Colour(0xa3cf32),
                           timestamp=datetime.datetime.now()) \
@@ -75,37 +67,40 @@ async def help(ctx, args=None):
         .set_footer(text="footer text", icon_url="https://f4.bcbits.com/img/a1976873474_10.jpg") \
 
     for x in client.commands:
-        embed.add_field(name=x.name, value=x.help, inline=False)
+        embed.add_field(name='`' + x.name + '`', value=x.help, inline=True)
 
     await ctx.send(embed=embed)
 
 
 # PING
-@client.command(name="ping", help="pinger")
+@client.command(name="ping")
 async def ping(ctx):
+    """pinger"""
     await ctx.send(f'Pong, {round(client.latency * 1000)} ms')
 
 
 # GEY
-@client.command(name="gay", help="everyone iz gae")
+@client.command(name="gay")
 async def gey(ctx):
+    """everyone iz gae"""
     await ctx.send('Everyone reading this is gay')
 
 
 # 8BALL
-@client.command(name="8ball", help="8ball askr questiyon")
+@client.command(name="8ball")
 async def _8ball(ctx, *, question=None):
+    """8ball askr questiyon"""
     if question is None:
         await ctx.send("wher iz question??")
         return
 
-    responses = ['100% true', 'Without a doubt', "That's a gay question to ask", 'Most likely', 'No', 'Obviously not']
     await ctx.send(f'{random.choice(responses)}')
 
 
 # SPAM
-@client.command(name="spam", help="spam people veri nayz")
+@client.command(name="spam")
 async def spam(ctx, *, person=None):
+    """spam people veri nayz"""
     if person is None:
         await ctx.send("pilis specify waht to spam")
 
@@ -113,26 +108,30 @@ async def spam(ctx, *, person=None):
         await ctx.send(person)
 
 
-@client.command(name="schatap", aliases=['shut up men', 'men plz stop'], help="schattr apr")
+@client.command(name="schatap", aliases=['shut up men', 'men plz stop'])
 async def schatap(ctx):
+    """schattr apr"""
     await ctx.send('Ok men i stop big sory')
 
 
 # REMIND
-@client.command(name="remindme", aliases=['remind'], help="remindme martin gae")
+@client.command(name="remindme", aliases=['remind'])
 async def remindme(ctx):
+    """remind me martin gae"""
     await ctx.send('Martin is gey')
 
 
 # THANKS
-@client.command(name="gud", aliases=['good', 'gut'], help="veri gud")
+@client.command(name="gud", aliases=['good', 'gut'])
 async def gud(ctx):
+    """veri gud"""
     await ctx.send('thx')
 
 
 # CHANGE GAME
-@client.command(name="changegame", help="changer geym")
+@client.command(name="changegame")
 async def changeGame(ctx):
+    """changer geym"""
     luck = randint(0, 5)
     if luck == 1:
         await ctx.send('How about no')
@@ -168,4 +167,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('Nzc2NDMzMzI2NTc0OTI3ODc0.X60z4g.CdN6GTg1aWk8JohOIOjtW2yWPsw')  # TOKEN
+client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.MpW2OU8ZZm-ysShxXkViwhnYJaw')  # TOKEN

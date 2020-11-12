@@ -1,7 +1,6 @@
 import re
 import discord
 import lavalink
-from discord import Reaction
 from discord.ext import commands
 
 url_rx = re.compile(r'https?://(?:www\.)?.+')
@@ -53,7 +52,7 @@ class Music(commands.Cog):
 
         # These are commands that require the bot to join a voicechannel (i.e. initiating playback).
         # Commands such as volume/skip etc don't require the bot to be in a voicechannel so don't need listing here.
-        should_connect = ctx.command.name in ('play',)
+        should_connect = ctx.command.name in ('play', 'summon')
 
         if not ctx.author.voice or not ctx.author.voice.channel:
             # Our cog_command_error handler catches this and sends it to the voicechannel.
@@ -93,7 +92,7 @@ class Music(commands.Cog):
 
     @commands.command(name="play", aliases=['p'])
     async def play(self, ctx, *, query: str):
-        """ Searches and plays a song from a given query. """
+        """Searches and plays a song from a given query."""
         # Get the player for this guild from cache.
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         # Remove leading and trailing <>. <> may be used to suppress embedding links in Discord.
@@ -148,7 +147,7 @@ class Music(commands.Cog):
 
     @commands.command(name="disconnect", aliases=['dc'])
     async def disconnect(self, ctx):
-        """ Disconnects the player from the voice channel and clears its queue. """
+        """Disconnects the player from the voice channel and clears its queue."""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
 
         if not player.is_connected:
@@ -168,6 +167,59 @@ class Music(commands.Cog):
         # Disconnect from the voice channel.
         await self.connect_to(ctx.guild.id, None)
         await ctx.message.add_reaction('👍')
+
+    @commands.command(name="stop", aliases=['pause'])
+    async def stop(self, ctx):
+        """Stops the player"""
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+
+        if player.paused:
+            await ctx.send("im already paused u nuberman")
+        else:
+            await player.set_pause(True)
+            await ctx.message.add_reaction('👍')
+
+    @commands.command(name="resume")
+    async def resume(self, ctx):
+        """Resumes the player"""
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+
+        if player.paused:
+            await ctx.message.add_reaction('👍')
+            await player.set_pause(False)
+        else:
+            await ctx.send("men i playing musik already u nub")
+
+    @commands.command(name="queue", aliases=["q"])
+    async def queue(self, ctx):
+        """Shows current queue"""
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+        await ctx.send(player.queue)
+
+    @commands.command(name="skip")
+    async def skip(self, ctx):
+        """Skips the current song playing"""
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+        await player.skip()
+        await ctx.message.add_reaction('👍')
+
+    @commands.command(name="clear")
+    async def clear(self, ctx):
+        """Clears the current queue and stops player"""
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+        player.queue.clear()
+        await player.stop()
+        await ctx.message.add_reaction('👍')
+
+    @commands.command(name="summon")
+    async def summon(self, ctx):
+        """Summons player to your channel"""
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+
+        if player.is_connected:
+            await ctx.send("men im already in vc")
+        else:
+            await self.connect_to(ctx.guild.id, ctx.author.voice.channel)
 
 
 def setup(bot):

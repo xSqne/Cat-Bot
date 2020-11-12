@@ -1,3 +1,1 @@
-#!/bin/sh
-
-java -jar ~/PycharmProjects/CatBot/Lavalink/Lavalink.jar
+java -jar ./Lavalink.jar
