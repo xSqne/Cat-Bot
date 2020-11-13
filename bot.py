@@ -50,6 +50,7 @@ async def reload(ctx, cogName=None):
 
     client.unload_extension(f'cogs.{cogName}')
     client.load_extension(f'cogs.{cogName}')
+    await ctx.message.add_reaction('👍')
 
 
 # HELP
@@ -167,4 +168,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.MpW2OU8ZZm-ysShxXkViwhnYJaw')  # TOKEN
+client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA._A5fhFqem61eULYypqfSvo-XWjk')  # TOKEN

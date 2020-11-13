@@ -1,3 +1,4 @@
+import datetime
 import re
 import discord
 import lavalink
@@ -6,13 +7,14 @@ from discord.ext import commands
 url_rx = re.compile(r'https?://(?:www\.)?.+')
 
 
-class Music(commands.Cog):
+class music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
         if not hasattr(bot, 'lavalink'):  # This ensures the client isn't overwritten during cog reloads.
             bot.lavalink = lavalink.Client(672533195903729687)
-            bot.lavalink.add_node('127.0.0.1', 2333, 'youshallnotpass', 'eu', 'default-node')  # Host, Port, Password, Region, Name
+            bot.lavalink.add_node('127.0.0.1', 2333, 'youshallnotpass', 'eu',
+                                  'default-node')  # Host, Port, Password, Region, Name
             bot.add_listener(bot.lavalink.voice_update_handler, 'on_socket_response')
 
         lavalink.add_event_hook(self.track_hook)
@@ -194,7 +196,34 @@ class Music(commands.Cog):
     async def queue(self, ctx):
         """Shows current queue"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
-        await ctx.send(player.queue)
+        embed = discord.Embed(colour=discord.Colour(0xa3cf32), timestamp=datetime.datetime.now()) \
+            .set_author(name='| ' + ctx.guild.name + '\'s Queue', url="", icon_url=ctx.guild.icon_url) \
+            .set_footer(text="Requested by " + ctx.author.name, icon_url=ctx.author.avatar_url) \
+
+        if len(player.queue) == 0:
+            if player.is_playing:
+                track = player.current.title
+                url = 'https://www.youtube.com/watch?v=' + player.current.identifier
+                embed.add_field(name="Now playing", value=f'[{track}]({url})', inline=False)
+                await ctx.send(embed=embed)
+            else:
+                embed.set_author(name='| ' + ctx.guild.name + '\'s queue is empty :/', icon_url=ctx.guild.icon_url)
+                await ctx.send(embed=embed)
+        else:
+            queue = player.queue
+            current = player.current.title
+            i = 0
+            url = 'https://www.youtube.com/watch?v=' + player.current.identifier
+
+            embed.add_field(name="Now playing", value=f'[{current}]({url})', inline=False)
+            while i < len(queue):
+                url = 'https://www.youtube.com/watch?v=' + queue[i].identifier
+                title = queue[i].title
+
+                embed.add_field(name=str(i + 1) + ".", value=f'[{title}]({url})', inline=False)
+                i += 1
+
+            await ctx.send(embed=embed)
 
     @commands.command(name="skip")
     async def skip(self, ctx):
@@ -207,8 +236,8 @@ class Music(commands.Cog):
     async def clear(self, ctx):
         """Clears the current queue and stops player"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
-        player.queue.clear()
         await player.stop()
+        player.queue.clear()
         await ctx.message.add_reaction('👍')
 
     @commands.command(name="summon")
@@ -219,8 +248,32 @@ class Music(commands.Cog):
         if player.is_connected:
             await ctx.send("men im already in vc")
         else:
-            await self.connect_to(ctx.guild.id, ctx.author.voice.channel)
+            await self.connect_to(ctx.guild.id, ctx.author.voice.channel.id)
+
+    @commands.command(name="volume")
+    async def volume(self, ctx, args=None):
+        """Sets player volume (1-1000)"""
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+
+        if args is None:
+            await ctx.send("Current player volume is " + str(player.volume))
+        else:
+            args = int(args)
+            if 0 <= args <= 1000:
+                await player.set_volume(args)
+                await ctx.send("Set player volume to " + str(args))
+            else:
+                await ctx.send("The volume can only be between 0-1000")
+
+    @commands.command(name="seek")
+    async def seek(self, ctx, args):
+        """Seeks to a given point in the track (HH:MM:SS format)"""
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+        h, m, s, = args.split(':')
+        time = (int(h) * 3600 + int(m) * 60 + int(s)) * 1000
+
+        await player.seek(time)
 
 
 def setup(bot):
-    bot.add_cog(Music(bot))
+    bot.add_cog(music(bot))
