@@ -12,7 +12,7 @@ class music(commands.Cog):
         self.bot = bot
 
         if not hasattr(bot, 'lavalink'):  # This ensures the client isn't overwritten during cog reloads.
-            bot.lavalink = lavalink.Client(672533195903729687)
+            bot.lavalink = lavalink.Client(776433326574927874)
             bot.lavalink.add_node('127.0.0.1', 2333, 'youshallnotpass', 'eu',
                                   'default-node')  # Host, Port, Password, Region, Name
             bot.add_listener(bot.lavalink.voice_update_handler, 'on_socket_response')
@@ -273,6 +273,13 @@ class music(commands.Cog):
         time = (int(h) * 3600 + int(m) * 60 + int(s)) * 1000
 
         await player.seek(time)
+
+    @commands.command(name="np")
+    async def np(self, ctx):
+        """Returns position in track"""
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+        position = round(player.position / 1000)
+        await ctx.send(datetime.timedelta(seconds=position))
 
 
 def setup(bot):

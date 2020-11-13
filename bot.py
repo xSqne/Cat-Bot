@@ -141,6 +141,12 @@ async def changeGame(ctx):
                                      activity=discord.Game(random.choice(randomGamesList)))
 
 
+@client.command(name="invite")
+async def invite(ctx):
+    """Gibes invite link"""
+    await ctx.send('Heer is link for invite: <https://discord.com/api/oauth2/authorize?client_id=776433326574927874&permissions=8&scope=bot>')
+
+
 # READING_MESSAGES
 @client.event
 async def on_message(message):
@@ -168,4 +174,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA._A5fhFqem61eULYypqfSvo-XWjk')  # TOKEN
+client.run('Nzc2NDMzMzI2NTc0OTI3ODc0.X60z4g.BlwCGeKGdYIPlCqIyASTBfKwwAc')  # TOKEN
