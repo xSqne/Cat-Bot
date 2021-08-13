@@ -12,6 +12,7 @@ client = commands.Bot(command_prefix='!')
 # apparently there's an implemented help command so disable it bc it look ugly
 client.remove_command('help')
 
+
 # function to read files
 def readFiles(filePath):
     f = open(filePath, "r")
@@ -27,17 +28,18 @@ triggerList = readFiles("lists/trigger.txt")
 bannedWordsList = readFiles("lists/bannedwords.txt")
 responses = readFiles("lists/responses.txt")
 
-# load cogs
-for filename in os.listdir("./cogs"):
-    if filename.endswith(".py"):
-        client.load_extension(f'cogs.{filename[:-3]}')
-
 
 @client.event
 async def on_ready():
     print('client ready')
+
     # setting the bot's status
     await client.change_presence(status=discord.Status.online, activity=discord.Game(random.choice(randomGamesList)))
+
+    # load cogs
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            client.load_extension(f'cogs.{filename[:-3]}')
 
 
 # LOAD COG
@@ -144,7 +146,8 @@ async def changeGame(ctx):
 @client.command(name="invite")
 async def invite(ctx):
     """Gibes invite link"""
-    await ctx.send('Heer is link for invite: <https://discord.com/api/oauth2/authorize?client_id=776433326574927874&permissions=8&scope=bot>')
+    await ctx.send(
+        'Heer is link for invite: <https://discord.com/api/oauth2/authorize?client_id=776433326574927874&permissions=8&scope=bot>')
 
 
 # READING_MESSAGES
@@ -174,4 +177,4 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-client.run('')  # TOKEN
+client.run('NjcyNTMzMTk1OTAzNzI5Njg3.XjM3WA.EDD7DeI0ohgX1ee4zWON3pQEI9E')  # TOKEN

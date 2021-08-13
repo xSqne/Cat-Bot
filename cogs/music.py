@@ -7,12 +7,12 @@ from discord.ext import commands
 url_rx = re.compile(r'https?://(?:www\.)?.+')
 
 
-class music(commands.Cog):
+class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
         if not hasattr(bot, 'lavalink'):  # This ensures the client isn't overwritten during cog reloads.
-            bot.lavalink = lavalink.Client(776433326574927874)
+            bot.lavalink = lavalink.Client(bot.user.id)
             bot.lavalink.add_node('127.0.0.1', 2333, 'youshallnotpass', 'eu',
                                   'default-node')  # Host, Port, Password, Region, Name
             bot.add_listener(bot.lavalink.voice_update_handler, 'on_socket_response')
@@ -72,7 +72,7 @@ class music(commands.Cog):
                 raise commands.CommandInvokeError('I need the `CONNECT` and `SPEAK` permissions.')
 
             player.store('channel', ctx.channel.id)
-            await self.connect_to(ctx.guild.id, str(ctx.author.voice.channel.id))
+            await ctx.guild.change_voice_state(channel=ctx.author.voice.channel)
         else:
             if int(player.channel_id) != ctx.author.voice.channel.id:
                 raise commands.CommandInvokeError('You need to be in my voicechannel.')
@@ -83,14 +83,8 @@ class music(commands.Cog):
             # it indicates that there are no tracks left in the player's queue.
             # To save on resources, we can tell the bot to disconnect from the voicechannel.
             guild_id = int(event.player.guild_id)
-            await self.connect_to(guild_id, None)
-
-    async def connect_to(self, guild_id: int, channel_id: str):
-        """ Connects to the given voicechannel ID. A channel_id of `None` means disconnect. """
-        ws = self.bot._connection._get_websocket(guild_id)
-        await ws.voice_state(str(guild_id), channel_id)
-        # The above looks dirty, we could alternatively use `bot.shards[shard_id].ws` but that assumes
-        # the bot instance is an AutoShardedBot.
+            guild = self.bot.get_guild(guild_id)
+            await guild.change_voice_state(channel=None)
 
     @commands.command(name="play", aliases=['p'])
     async def play(self, ctx, *, query: str):
@@ -100,15 +94,15 @@ class music(commands.Cog):
         # Remove leading and trailing <>. <> may be used to suppress embedding links in Discord.
         query = query.strip('<>')
 
-        # Check if the user input might be a URL. If it isn't, we can Lavalink do a YouTube search for it instead.
+        # Check if the user input might be a URL. If it isn't, we can lavalink do a YouTube search for it instead.
         # SoundCloud searching is possible by prefixing "scsearch:" instead.
         if not url_rx.match(query):
             query = f'ytsearch:{query}'
 
-        # Get the results for the query from Lavalink.
+        # Get the results for the query from lavalink.
         results = await player.node.get_tracks(query)
 
-        # Results could be None if Lavalink returns an invalid response (non-JSON/non-200 (OK)).
+        # Results could be None if lavalink returns an invalid response (non-JSON/non-200 (OK)).
         # ALternatively, resullts['tracks'] could be an empty array if the query yielded no tracks.
         if not results or not results['tracks']:
             return await ctx.send('Nothing found!')
@@ -137,7 +131,7 @@ class music(commands.Cog):
 
             # You can attach additional information to audiotracks through kwargs, however this involves
             # constructing the AudioTrack class yourself.
-            track = lavalink.models.AudioTrack(track, ctx.author.id, recommended=True)
+            track = lavalink.models.AudioTrack(track, ctx.author.id)
             player.add(requester=ctx.author.id, track=track)
 
         await ctx.send(embed=embed)
@@ -164,10 +158,10 @@ class music(commands.Cog):
         # Clear the queue to ensure old tracks don't start playing
         # when someone else queues something.
         player.queue.clear()
-        # Stop the current track so Lavalink consumes less resources.
+        # Stop the current track so lavalink consumes less resources.
         await player.stop()
         # Disconnect from the voice channel.
-        await self.connect_to(ctx.guild.id, None)
+        await ctx.guild.change_voice_state(channel=None)
         await ctx.message.add_reaction('👍')
 
     @commands.command(name="stop", aliases=['pause'])
@@ -248,7 +242,7 @@ class music(commands.Cog):
         if player.is_connected:
             await ctx.send("men im already in vc")
         else:
-            await self.connect_to(ctx.guild.id, ctx.author.voice.channel.id)
+            await ctx.guild.change_voice_state(channel=ctx.author.voice.channel)
 
     @commands.command(name="volume")
     async def volume(self, ctx, args=None):
@@ -279,8 +273,9 @@ class music(commands.Cog):
         """Returns position in track"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         position = round(player.position / 1000)
+
         await ctx.send(datetime.timedelta(seconds=position))
 
 
 def setup(bot):
-    bot.add_cog(music(bot))
+    bot.add_cog(Music(bot))
