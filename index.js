@@ -37,5 +37,11 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
+// Reply to buttons
+client.on('interactionCreate', interaction => {
+	if (!interaction.isButton()) return;
+	console.log(interaction);
+});
+
 // Login to Discord with your client's token
 client.login(token);
