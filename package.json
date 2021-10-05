@@ -1,0 +1,25 @@
+{
+  "name": "cat-bot",
+  "version": "1.0.0",
+  "description": "This is a rewrite with the library `discord.js`, as `discord.py` is discontinued.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xSqne/Cat-Bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xSqne/Cat-Bot/issues"
+  },
+  "homepage": "https://github.com/xSqne/Cat-Bot#readme",
+  "dependencies": {
+    "@discordjs/builders": "^0.6.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.23.1",
+    "discord.js": "^13.1.0"
+  }
+}
