@@ -2,7 +2,7 @@
   "name": "cat-bot",
   "version": "1.0.0",
   "description": "This is a rewrite with the library `discord.js`, as `discord.py` is discontinued.",
-  "main": "bot.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,5 +21,8 @@
     "@discordjs/rest": "^0.1.0-canary.0",
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.1.0"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
