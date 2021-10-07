@@ -1,7 +1,7 @@
 // Require the necessary discord.js classes
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const token;
+let token;
 
 // Check for token in env vars
 if("TOKEN" in process.env) {
