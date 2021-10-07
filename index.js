@@ -5,8 +5,21 @@ const { token } = require('./config.json');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+module.exports = client;
 
 client.commands = new Collection();
+
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+} 
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -15,11 +28,6 @@ for (const file of commandFiles) {
 	// With the key as the command name and the value as the exported module
 	client.commands.set(command.data.name, command);
 }
-
-// When the client is ready, run this code (only once)
-client.once('ready', () => {
-	console.log('Ready!');
-});
 
 // Reply to interactions (Slash Commands)
 client.on('interactionCreate', async interaction => {
@@ -31,6 +39,7 @@ client.on('interactionCreate', async interaction => {
 
 	try {
 		await command.execute(interaction);
+
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
@@ -40,7 +49,15 @@ client.on('interactionCreate', async interaction => {
 // Reply to buttons
 client.on('interactionCreate', interaction => {
 	if (!interaction.isButton()) return;
-	console.log(interaction);
+
+	const command = client.commands.get(interaction.message.interaction.commandName);
+
+	try {
+		command.button(interaction);
+		
+	} catch (error) {
+		console.error(error);
+	}
 });
 
 // Login to Discord with your client's token
