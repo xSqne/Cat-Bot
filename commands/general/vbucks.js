@@ -22,7 +22,7 @@ module.exports = {
 
 	async button(interaction) {
 		// Check if user is in a vc, then kick
-		if(typeof interaction.member.voice.channel !== 'undefined') {
+		if(interaction.member.voice.channelId) {
 			await interaction.member.voice.disconnect(['you got scammed L']);
 		}
 
