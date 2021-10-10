@@ -10,7 +10,7 @@ module.exports = {
 	async execute(interaction) {
 		const player = interaction.client.player;
 
-		if (!interaction.member.voice.channelId) await interaction.reply({content:'You are not in a voice channel!', ephemeral: true});
+		if (!interaction.member.voice.channelId) return await interaction.reply({content:'You are not in a voice channel!', ephemeral: true});
 
 		const result = await player.search(interaction.options.getString('music'), {
 			requestedBy: interaction.user.tag,
@@ -24,16 +24,16 @@ module.exports = {
 		});
 
 		try {
-			if (!queue.connection) await queue.connect(interaction.member.voice.channel)
+			if (!queue.connection) await queue.connect(interaction.member.voice.channel);
 		} catch {
-			await player.deleteQueue(interaction.guild.id)
-			await interaction.reply('I cannot join the voice channel')
-		}
+			await player.deleteQueue(interaction.guild.id);
+			return await interaction.reply('I cannot join the voice channel');
+		}	
+
+		await interaction.reply(`Loading your ${result.playlist ? 'playlist' : 'track'}...`);
 
 		result.playlist ? queue.addTracks(result.tracks) : queue.addTrack(result.tracks[0]);
 
 		if (!queue.playing) await queue.play();
-
-		await interaction.reply(`Playing ${result.tracks[0]}`)
 	},
 };

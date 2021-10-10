@@ -16,16 +16,21 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 client.player = new Player(client);
 
 // Read Events
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-for(const file of eventFiles) {
-	const event = require(`./events/${file}`);
+fs.readdirSync('./events/').forEach(dirs => {
+	const events = fs.readdirSync(`./events/${dirs}`).filter(files => files.endsWith('.js'));
 
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
+	for (const file of events) {
+        const event = require(`./events/${dirs}/${file}`);
+		
+		if (dirs === 'player') {
+			client.player.on(event.name, (...args) => event.execute(...args))
+		} else if (event.once) {
+			client.once(event.name, (...args) => event.execute(...args));
+		} else {
+			client.on(event.name, (...args) => event.execute(...args));
+		}
 	}
-} 
+})
 
 // Read Commands
 client.commands = new Collection();
