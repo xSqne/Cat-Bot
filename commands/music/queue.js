@@ -19,14 +19,14 @@ module.exports = {
             .setAuthor('Cat Bot', 'https://cdn.discordapp.com/avatars/776433326574927874/c0ac50a6ad00644847cccfe1a8cfead5.webp?size=80')
             .setTimestamp()
             .setFooter(`Requested by ${interaction.user.tag}`, `${interaction.user.avatarURL()}`)
-            .addField('Now playing:', `${current.title} by ${current.author}`);
+            .addField(`1. ${current.title}`, `by ${current.author}`);
 
         if (queue.tracks.length === 0) {
             return await interaction.reply({embeds: [embed]})
             
         } else {
             for (let i = 0; i < queue.tracks.length; i++) {
-                embed.addField(`${i+2}.`, `${queue.tracks[i].title} by ${queue.tracks[i].author}`);
+                embed.addField(`${i+2}. ${queue.tracks[i].title}`, ` by ${queue.tracks[i].author}`);
             }
         }
 
