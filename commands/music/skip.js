@@ -8,9 +8,9 @@ module.exports = {
 	async execute(interaction) {
         const queue = interaction.client.player.getQueue(interaction.guild.id);
 
-        if (!queue) return await interaction.reply(`No queue found for your guild`);
+        if (!queue) return void await interaction.reply(`No queue found for your guild`);
 
         const success = queue.skip();
-        await interaction.reply(success ? `Skipped! ✅` : `Failed to skip...`);
+        return void await interaction.reply(success ? `Skipped!` : `Failed to skip...`);
 	},
 };
