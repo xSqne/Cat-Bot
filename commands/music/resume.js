@@ -11,6 +11,6 @@ module.exports = {
         if (!queue) await interaction.reply(`No queue found for your guild`);
 
         const success = queue.setPaused(false);
-        await interaction.reply(success ? `Resumed ✅` : `Music is playing... wtf you trying to resume??`);
+        await interaction.reply(success ? `Resumed ✅` : `Music is already playing`);
 	},
 };

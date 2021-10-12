@@ -12,25 +12,22 @@ if("TOKEN" in process.env) {
 }
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES] });
+global.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES] });
 client.player = new Player(client);
 
-// Read Events
-fs.readdirSync('./events/').forEach(dirs => {
-	const events = fs.readdirSync(`./events/${dirs}`).filter(files => files.endsWith('.js'));
+require('./events/player/player.js')
 
-	for (const file of events) {
-        const event = require(`./events/${dirs}/${file}`);
-		
-		if (dirs === 'player') {
-			client.player.on(event.name, (...args) => event.execute(...args))
-		} else if (event.once) {
-			client.once(event.name, (...args) => event.execute(...args));
-		} else {
-			client.on(event.name, (...args) => event.execute(...args));
-		}
+// Read Events
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
 	}
-})
+}
 
 // Read Commands
 client.commands = new Collection();

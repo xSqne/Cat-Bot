@@ -9,9 +9,10 @@ module.exports = {
 
 	async execute(interaction) {
 		const queue = interaction.client.player.getQueue(interaction.guild.id);
-        const current = queue.current;
 
-        if (!queue) await interaction.reply(`No queue found for your guild`);
+        if (!queue) return void await interaction.reply(`No queue found for your guild`);
+
+        const current = queue.current;
 
         const embed = new MessageEmbed()
             .setColor('#0099ff')
@@ -22,7 +23,7 @@ module.exports = {
             .addField(`1. ${current.title}`, `by ${current.author}`);
 
         if (queue.tracks.length === 0) {
-            return await interaction.reply({embeds: [embed]})
+            return void await interaction.reply({embeds: [embed]})
             
         } else {
             for (let i = 0; i < queue.tracks.length; i++) {
