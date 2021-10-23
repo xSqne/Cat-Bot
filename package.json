@@ -4,7 +4,7 @@
   "description": "This is a rewrite with the library `discord.js`, as `discord.py` is discontinued.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -23,10 +23,15 @@
     "discord-api-types": "^0.23.1",
     "discord-player": "^5.1.0",
     "discord.js": "^13.1.0",
+    "express": "^4.17.1",
     "ffmpeg": "^0.0.4",
-    "ffmpeg-static": "^4.4.0"
+    "ffmpeg-static": "^4.4.0",
+    "opus": "^0.0.0"
   },
   "engines": {
     "node": "16.x"
+  },
+  "devDependencies": {
+    "node": "^16.12.0"
   }
 }

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { Player } = require('discord-player');
+const keepAlive = require('./webserver.js');
 
 // Check for token in env vars
 if("TOKEN" in process.env) {
@@ -41,5 +42,8 @@ fs.readdirSync('./commands/').forEach(dirs => {
     };
 })
 
-// Login to Discord with your client's token
+// Keep the bot alive 24/7
+keepAlive();
+
+// Login to Discord with  client's token
 client.login(token);
