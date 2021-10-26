@@ -11,12 +11,14 @@ module.exports = {
 
         if (!queue) return void await interaction.reply(`No queue found for your guild`);
 
-        const track = interaction.options.getInteger('track') - 1;
+        const trackNum = interaction.options.getInteger('track') - 1;
 
         try {
-            const jump = queue.jump(track);
-            await interaction.reply(`Jumped to ${queue.tracks[track].title}`);
-        } catch (error) {
+            const track = queue.tracks[trackNum];
+            
+            queue.jump(track);
+            await interaction.reply(`Jumped to ${track.title}`);
+        } catch {
             await interaction.reply('Something went wrong... Make sure you put a valid track number');
         }
 	},

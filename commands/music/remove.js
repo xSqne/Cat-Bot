@@ -18,10 +18,11 @@ module.exports = {
                 const current = queue.current;
                 queue.skip();
                 
-                return void await interaction.reply(`Successfully removed ${current.title}`);
+                await interaction.reply(`Successfully removed ${current.title}`);
+            } else {
+                const removed = queue.remove(track);
+                await interaction.reply(`Successfully removed ${removed.title}`);
             }
-            const removed = queue.remove(track);
-            await interaction.reply(`Successfully removed ${removed.title}`);
         } catch (error) {
             await interaction.reply('Something went wrong... Make sure you put a valid track number');
         }
