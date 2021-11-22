@@ -11,7 +11,7 @@ module.exports = {
 
         if (!queue) return void await interaction.reply(`No queue found for your guild`);
 
-        const track = interaction.options.getInteger('track') - 1;
+        const track = interaction.options.getInteger('track');
 
         try {
             if (track === 0) {
@@ -20,7 +20,7 @@ module.exports = {
                 
                 await interaction.reply(`Successfully removed ${current.title}`);
             } else {
-                const removed = queue.remove(track);
+                const removed = queue.remove(track - 1);
                 await interaction.reply(`Successfully removed ${removed.title}`);
             }
         } catch (error) {
