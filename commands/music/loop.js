@@ -13,11 +13,11 @@ module.exports = {
         const loop = queue.repeatMode;
 
         if (loop === 2) {
-            const success = queue.setRepeatMode(0);
+            const success = await queue.setRepeatMode(0);
             await interaction.reply(success ? `Disabled looping` : `Failed...`);
 
         } else {
-            const success = queue.setRepeatMode(2);
+            const success = await queue.setRepeatMode(2);
             await interaction.reply(success ? `Looping the queue` : `Failed...`);
         }        
 	},

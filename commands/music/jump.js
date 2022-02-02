@@ -16,7 +16,7 @@ module.exports = {
         try {
             const track = queue.tracks[trackNum];
             
-            queue.skipTo(track);
+            await queue.skipTo(track);
             await interaction.reply(`Jumped to ${track.title}`);
         } catch (error) {
             await interaction.reply('Something went wrong... Make sure you put a valid track number');

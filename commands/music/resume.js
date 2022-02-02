@@ -10,7 +10,7 @@ module.exports = {
 
         if (!queue) await interaction.reply(`No queue found for your guild`);
 
-        const success = queue.setPaused(false);
+        const success = await queue.setPaused(false);
         await interaction.reply(success ? `Resumed ✅` : `Music is already playing`);
 	},
 };

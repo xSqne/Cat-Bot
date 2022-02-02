@@ -12,7 +12,7 @@ module.exports = {
 
         if (!queue) return void await interaction.reply('No queue found for your guild');
 
-        const current = queue.current;
+        const current = await queue.current;
 
         const embed = new MessageEmbed()
             .setColor('#0099ff')

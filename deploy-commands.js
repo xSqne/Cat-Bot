@@ -25,7 +25,7 @@ rest.put(
 
 /*
 rest.put(
-	Routes.applicationCommands(clientId), { body: commands })
+	Routes.applicationCommands(clientId), { body: commandList })
 	.then(() => console.log('Successfully registered global commands.'))
 	.catch(console.error);
-*/
+	*/

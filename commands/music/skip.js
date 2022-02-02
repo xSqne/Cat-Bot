@@ -11,7 +11,7 @@ module.exports = {
         if (!queue) return void await interaction.reply(`No queue found for your guild`);
 
 		try {
-			const skip = queue.skip();
+			const skip = await queue.skip();
 			await interaction.reply(skip ? `Skipped!` : 'Failed to skip...');
 		} catch {
 			await interaction.reply('Something went wrong... Make sure you put a valid track number');

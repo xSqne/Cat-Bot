@@ -12,7 +12,7 @@ module.exports = {
 
         if (!queue) return void await interaction.reply(`No queue found for your guild`);
 
-        const success = queue.setVolume(volume);
+        const success = await queue.setVolume(volume);
         await interaction.reply(success ? `Set player volume to ${volume}%` : 'Failed to set volume');
 	},
 };

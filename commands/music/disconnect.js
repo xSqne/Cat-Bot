@@ -9,7 +9,7 @@ module.exports = {
 		const queue = interaction.client.player.getQueue(interaction.guild.id);
 
         if (queue) {
-            queue.destroy();
+            await queue.destroy();
             await interaction.reply('Disconnected the player');
         } else {
             await interaction.reply('Not in VC')

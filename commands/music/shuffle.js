@@ -11,7 +11,7 @@ module.exports = {
         if (!queue) return void await interaction.reply(`No queue found for your guild`);
 
 		try {
-			const shuffle = queue.shuffle();
+			const shuffle = await queue.shuffle();
 			await interaction.reply(shuffle ? 'Shuffled!' : 'Failed to shuffle...');
 		} catch {
 			await interaction.reply('Something went wrong... Make sure you put a valid track number');
