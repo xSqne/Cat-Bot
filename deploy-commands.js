@@ -18,6 +18,7 @@ fs.readdirSync('./commands/').forEach(dirs => {
 
 // Register commands
 const rest = new REST({ version: '9' }).setToken(token);
+
 rest.put(
 	Routes.applicationGuildCommands(clientId, guildId), { body: commandList })
 	.then(() => console.log('Successfully registered guild commands.'))

@@ -16,15 +16,6 @@ module.exports = {
 				interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 			}
 
-		} else if (interaction.isButton()) {
-			const command = client.commands.get(interaction.message.interaction.commandName);
-
-			try {
-				command.button(interaction);
-			} catch (error) {
-				console.error(error);
-				interaction.reply({ content: 'There was an error while executing this button!', ephemeral: true });
-			}
-		}
+		} 
 	}
 };

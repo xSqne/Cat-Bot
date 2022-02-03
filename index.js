@@ -12,13 +12,13 @@ if("TOKEN" in process.env) {
 	var { token } = require('./config.json');
 }
 
-// Create a new client instance
+// Create instances
 global.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES] });
 client.player = new Player(client);
 
+// Read Events
 require('./events/player/player.js')
 
-// Read Events
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
