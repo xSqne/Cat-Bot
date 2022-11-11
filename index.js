@@ -1,7 +1,6 @@
 const fs = require('fs');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const { Player } = require('discord-player');
-const keepAlive = require('./webserver.js');
 
 // Check for token in env vars
 if("TOKEN" in process.env) {
@@ -13,7 +12,7 @@ if("TOKEN" in process.env) {
 }
 
 // Create instances
-global.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES] });
+global.client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 client.player = new Player(client);
 
 // Read Events
@@ -41,9 +40,6 @@ fs.readdirSync('./commands/').forEach(dirs => {
         delete require.cache[require.resolve(`./commands/${dirs}/${file}`)];
     };
 })
-
-// Keep the bot alive 24/7
-keepAlive();
 
 // Login to Discord with  client's token
 client.login(token);

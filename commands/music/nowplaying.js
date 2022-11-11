@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, EmbedBuilder } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,14 +16,19 @@ module.exports = {
         const trackDuration = timestamp.progress == 'Infinity' ? 'infinity (live)' : current.duration;
         const progress = queue.createProgressBar();
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor('#0099ff')
             .setThumbnail(current.thumbnail)
-            .setAuthor(current.title, interaction.client.user.displayAvatarURL({ size: 1024, dynamic: true }))
+            .setAuthor({
+				name: 'Cat Bot', 
+				iconURL: interaction.client.user.displayAvatarURL({ size: 1024, dynamic: true })})
             .setTimestamp()
-            .setFooter(`Requested by ${interaction.user.tag}`, `${interaction.user.avatarURL()}`)
+            .setFooter({
+				text: `Requested by ${interaction.user.tag}`,
+				iconURL: `${interaction.user.avatarURL()}`
+			})
             .setDescription(`Volume **${queue.volume}**%\nDuration **${trackDuration}**\nRequested by ${current.requestedBy}`)
-            .addField("\u200b", `${progress}`);
+            .addFields({name: "\u200b", value: `${progress}`});
 
         await interaction.reply({embeds: [embed]});
 	},
