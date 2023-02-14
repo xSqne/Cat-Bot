@@ -42,7 +42,7 @@ module.exports = {
                 .setDescription(lyrics.slice(lyrics.length / 2, lyrics.length))
                 .setColor("#0099ff");
             
-            return await interaction.followUp({ embeds: [lyricsEmbedOne]});
+            return await interaction.followUp({ embeds: [lyricsEmbedTwo]});
         }
 	},
 };
