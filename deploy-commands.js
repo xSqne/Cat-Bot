@@ -1,11 +1,8 @@
-const fs = require('fs');
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { REST, Routes } = require('discord.js');
 const { clientId, guildId, token } = require('./config.json');
+const fs = require('node:fs');
 
-// Format all the commands into JSON
-const commandList = []
+const commandList = [];
 fs.readdirSync('./commands/').forEach(dirs => {
 	const commands = fs.readdirSync(`./commands/${dirs}`).filter(files => files.endsWith('.js'));
 
@@ -16,17 +13,23 @@ fs.readdirSync('./commands/').forEach(dirs => {
     };
 });
 
-// Register commands
-const rest = new REST({ version: '9' }).setToken(token);
+// Construct and prepare an instance of the REST module
+const rest = new REST({ version: '10' }).setToken(token);
 
-rest.put(
-	Routes.applicationGuildCommands(clientId, guildId), { body: commandList })
-	.then(() => console.log('Successfully registered guild commands.'))
-	.catch(console.error);
+// and deploy your commands!
+(async () => {
+	try {
+		console.log(`Started refreshing ${commandList.length} application (/) commands.`);
 
-/*
-rest.put(
-	Routes.applicationCommands(clientId), { body: commandList })
-	.then(() => console.log('Successfully registered global commands.'))
-	.catch(console.error);
-	*/
+		// The put method is used to fully refresh all commands in the guild with the current set
+		const data = await rest.put(
+			Routes.applicationGuildCommands(clientId, guildId),
+			{ body: commandList },
+		);
+
+		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+	} catch (error) {
+		// And of course, make sure you catch and log any errors!
+		console.error(error);
+	}
+})();

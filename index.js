@@ -12,7 +12,7 @@ if("TOKEN" in process.env) {
 }
 
 // Create instances
-global.client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
+global.client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates], presence: { activities: [{ name: 'Music', type: 'LISTENING' }], status: 'dnd' }});
 client.player = new Player(client);
 
 // Read Events
