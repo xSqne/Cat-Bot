@@ -28,6 +28,14 @@ const rest = new REST({ version: '10' }).setToken(token);
 		);
 
 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+
+		console.log(`Started refreshing ${data.length} global application (/) commands.`);
+		await rest.put(
+			Routes.applicationCommands(clientId),
+			{ body: commandList },
+		);
+		console.log(`Successfully reloaded ${data.length} global application (/) commands.`);
+
 	} catch (error) {
 		// And of course, make sure you catch and log any errors!
 		console.error(error);
